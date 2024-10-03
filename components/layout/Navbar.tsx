@@ -2,15 +2,15 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {navLinks} from "@/data/navLinks";
 import {ThemeChanger} from "@/app/Theme-changer";
+import Image from "next/image";
+import Logo from "@/app/assets/logo.jpg"
 
 const Navbar = () => {
     return (
         <nav className="py-4 bg-background/30 backdrop-blur-sm">
             <div className="container flex flex-row justify-between items-center">
                 <Link href="/">
-                    <h1 className="text-2xl">
-                        Logo
-                    </h1>
+                    <Image src={Logo} alt={'logo-icon'} width={154} height={132}/>
                 </Link>
                 <ul className="md:flex flex-row justify-between gap-8 hidden">
                     {navLinks.map((link) => (
