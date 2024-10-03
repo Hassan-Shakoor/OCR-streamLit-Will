@@ -1,4 +1,4 @@
-import {HandIcon, Pencil1Icon, Pencil2Icon, RocketIcon} from "@radix-ui/react-icons";
+import {Pencil2Icon, RocketIcon} from "@radix-ui/react-icons";
 import {Handshake} from "lucide-react";
 
 export const features = [
