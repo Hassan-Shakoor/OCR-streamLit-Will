@@ -5,9 +5,7 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {features} from "@/data/features";
 import {pricing} from "@/data/pricing";
 import {CircleCheck} from "lucide-react";
-import Link from 'next/link';
 import HeroImage from "@/app/assets/hero-image.jpg"
-import { auth, currentUser } from "@clerk/nextjs/server";
 
 export default async function Home() {
     const { userId } = auth()
