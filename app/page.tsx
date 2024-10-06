@@ -33,7 +33,7 @@ export default async function Home() {
                         </div>
                         <h1 className="md:text-7xl my-4 font-extrabold text-4xl md:leading-tight">Transform book excerpts into perfect notes</h1>
                         <p className="mx-auto my-4 text-sm w-full max-w-xl text-center font-medium leading-relaxed tracking-wide">
-                            Upload images of book pages and let our AI generate comprehensive notes. Save time and enhance your learning with RapidNotes.
+                            Upload images of book pages and let our AI generate comprehensive notes. Save time and enhance your learning with Booknoter.
                         </p>
                         <div className="flex flex-row justify-center items-center space-x-4 my-8">
                             <Button>

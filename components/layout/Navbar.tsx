@@ -2,7 +2,7 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import {navLinks} from "@/data/navLinks";
 import Image from "next/image";
-import Logo from "@/app/assets/logo.jpg"
+import Logo from "@/app/assets/logo.png"
 import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
 
