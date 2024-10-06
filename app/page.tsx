@@ -1,14 +1,24 @@
 import {Badge} from "@/components/ui/badge";
-import Link from "next/link";
-import {ArrowRightIcon} from "@radix-ui/react-icons";
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {features} from "@/data/features";
 import {pricing} from "@/data/pricing";
 import {CircleCheck} from "lucide-react";
+import Link from 'next/link';
+import HeroImage from "@/app/assets/hero-image.jpg"
+import { auth, currentUser } from "@clerk/nextjs/server";
 
-export default function Home() {
+export default async function Home() {
+    const { userId } = auth()
+    if (userId) {
+        // const user = await currentUser();
+        // if (user) {
+        //     console.log(user.firstName);
+        // } else {
+        //     console.log('User not found');
+        // } 
+    }   
     return (
         <>
             <div className="border-b border-border">
@@ -18,29 +28,18 @@ export default function Home() {
                             <div
                                 className="flex flex-row items-center justify-center gap-5 p-1 text-xs bg-card/60 backdrop-blur-lg rounded-md border border-border">
                                 <Badge className="font-semibold">New</Badge>
-                                <h5>Announce your new feature here</h5>
-                                <Link href="/" className="flex flex-row items-center">
-                                    View all features
-                                    <ArrowRightIcon className="w-6 h-6 ml-2"/>
-                                </Link>
+                                <h5 className={"pr-2"}>View Task history now added</h5>
                             </div>
                         </div>
-                        <h1 className="md:text-7xl my-4 font-extrabold text-4xl md:leading-tight">Create perfect
-                            projects
-                            with
-                            this landing
-                            page!</h1>
+                        <h1 className="md:text-7xl my-4 font-extrabold text-4xl md:leading-tight">Transform book excerpts into perfect notes</h1>
                         <p className="mx-auto my-4 text-sm w-full max-w-xl text-center font-medium leading-relaxed tracking-wide">
-                            This is a landing page template that you can use to create a beautiful website. It is
-                            designed
-                            to be
-                            easy to use and customize. You can use this template to create a landing page for your app,
-                            product,
-                            or service. It is built with Next.js, Tailwind CSS, and TypeScript.
+                            Upload images of book pages and let our AI generate comprehensive notes. Save time and enhance your learning with RapidNotes.
                         </p>
                         <div className="flex flex-row justify-center items-center space-x-4 my-8">
                             <Button>
-                                Get Started
+                                <Link href="/sign-up">
+                                    Get Started
+                                </Link>
                             </Button>
                             <Button variant="secondary">
                                 Learn More
@@ -60,7 +59,7 @@ export default function Home() {
                     </div>
 
                     <div className="max-w-4xl mx-auto mb-8">
-                        <Image className="w-full" src="/dashboard-ui.png" alt="Dashboard ui design" priority
+                        <Image className="w-full" src={HeroImage} alt="Dashboard ui design" priority
                                width={1200}
                                height={800}/>
                     </div>
@@ -77,15 +76,10 @@ export default function Home() {
                             WHY CHOOSE US
                         </h5>
                         <h2 className="text-4xl font-extrabold my-4">
-                            Build better websites with us
+                            Revolutionize your reading with AI note generation
                         </h2>
 
-                        <p className="mx-auto my-4 text-sm w-full max-w-md bg-transparent text-center font-medium leading-relaxed tracking-wide text-muted-foreground">
-                            Show off your features or services in a beautiful way. This section is perfect for
-                            showcasing
-                        </p>
-
-                        <div className="flex flex-col md:flex-row gap-4 mt-12">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
                             {features.map((feature) => (
                                 <Card key={feature.title} className="max-w-lg mx-auto">
                                     <CardHeader>
@@ -147,7 +141,9 @@ export default function Home() {
                                     </CardHeader>
                                     <CardContent>
                                         <Button className="w-full" variant={plan.fancy ? "default" : "secondary"}>
-                                            Get Started
+                                            <Link href="/sign-up">
+                                                Get Started
+                                            </Link>
                                         </Button>
                                     </CardContent>
                                     <CardFooter>
