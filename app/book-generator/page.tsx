@@ -49,7 +49,6 @@ export default function Dashboard() {
       const data = await response.json();
       setResult(data);
     } catch (err: any) {
-      // Handle any error as a general case
       setError(err.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -117,7 +116,12 @@ export default function Dashboard() {
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-2">OCR Result:</h2>
           <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
-            {JSON.stringify(result, null, 2)}
+            {/* Format the result for better readability */}
+            {Object.keys(result).map((key) => (
+              <div key={key}>
+                <strong>{key}:</strong> {result[key]}
+              </div>
+            ))}
           </pre>
         </div>
       )}
