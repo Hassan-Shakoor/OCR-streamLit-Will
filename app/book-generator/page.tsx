@@ -1,9 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Send, Upload, Loader } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
+import axios from "axios";
+import { Loader, Send, Upload } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 
 export default function Dashboard() {
+  const { getToken } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,23 +42,24 @@ export default function Dashboard() {
     }
 
     try {
-      const response = await fetch(
+      const token = await getToken();
+      console.log("token=", token);
+      const response = await axios.post(
         "https://akm-image-latest.onrender.com/api/v1/generate-notes/",
+        formData,
         {
-          method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to process image");
-      }
-      const data = await response.json();
-      setResult(data);
+      setResult(response.data);
       if (!showPrompt) {
         setShowPrompt(true);
       }
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
+      setError(err.response?.data?.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -112,7 +116,11 @@ export default function Dashboard() {
         </div>
       )}
       {file && (
-        <Button onClick={handleSubmit} disabled={loading} className="w-full mb-6">
+        <Button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full mb-6"
+        >
           {loading ? (
             <>
               <Loader className="mr-2 h-4 w-4 animate-spin" />
@@ -120,7 +128,7 @@ export default function Dashboard() {
             </>
           ) : (
             <>
-              {showPrompt ? 'Generate New Notes' : 'Generate Initial Notes'}
+              {showPrompt ? "Generate New Notes" : "Generate Initial Notes"}
               <Send className="ml-2 h-4 w-4" />
             </>
           )}
@@ -134,7 +142,11 @@ export default function Dashboard() {
       {result && (
         <div className="mt-6 relative">
           <h2 className="text-xl font-semibold mb-2">OCR Result:</h2>
-          <div className={`bg-gray-100 p-4 rounded-lg h-96 overflow-y-auto overflow-x-hidden ${loading ? 'blur-sm' : ''}`}>
+          <div
+            className={`bg-gray-100 p-4 rounded-lg h-96 overflow-y-auto overflow-x-hidden ${
+              loading ? "blur-sm" : ""
+            }`}
+          >
             {Object.keys(result).map((key) => (
               <div key={key}>
                 <strong>{key}:</strong> {result[key]}
@@ -145,7 +157,9 @@ export default function Dashboard() {
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded-lg">
               <div className="text-center">
                 <Loader className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-2" />
-                <p className="text-sm text-gray-600">Please wait for 1-2 minutes...</p>
+                <p className="text-sm text-gray-600">
+                  Please wait for 1-2 minutes...
+                </p>
               </div>
             </div>
           )}
