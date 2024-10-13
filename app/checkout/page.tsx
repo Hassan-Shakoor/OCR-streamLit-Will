@@ -8,10 +8,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { useUser } from "@clerk/nextjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CheckoutPage() {
+  const { user } = useUser();
   const [clientSecret, setClientSecret] = useState("");
   const [planDetails, setPlanDetails] = useState({
     title: "",
@@ -36,15 +38,18 @@ export default function CheckoutPage() {
       parseFloat(price?.replace("$", "") || "0") * 100
     );
 
-    // Create PaymentIntent as soon as the page loads
     fetch("/api/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: amountInCents }),
+      body: JSON.stringify({
+        amount: amountInCents,
+        user_id: user?.id,
+        credits: credits,
+      }),
     })
       .then((res) => res.json())
       .then((data) => setClientSecret(data.clientSecret));
-  }, [searchParams]);
+  }, [searchParams, user]);
 
   return (
     <div className="container mx-auto px-4 py-8">
