@@ -1,12 +1,13 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
-import { Loader, Send, Upload } from "lucide-react";
-import { ChangeEvent, useState } from "react";
+import { CreditCard, Loader, Send, Upload } from "lucide-react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const { getToken } = useAuth();
+  const { getToken, userId } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,12 +15,34 @@ export default function Dashboard() {
   const [error, setError] = useState<string | null>(null);
   const [prompt, setPrompt] = useState<string>("");
   const [showPrompt, setShowPrompt] = useState<boolean>(false);
+  const [userCredits, setUserCredits] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchUserCredits();
+  }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
       setPreview(URL.createObjectURL(selectedFile));
+    }
+  };
+
+  const fetchUserCredits = async () => {
+    try {
+      const token = await getToken();
+      const response = await axios.get(
+        `https://akm-image-latest.onrender.com/api/v1/users/${userId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUserCredits(response.data.credits);
+    } catch (err) {
+      console.error("Failed to fetch user credits:", err);
     }
   };
 
@@ -62,12 +85,25 @@ export default function Dashboard() {
       setError(err.response?.data?.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
+      // Refetch user credits after a successful response
+      await fetchUserCredits();
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">booknoter</h1>
+      {userCredits !== null && (
+        <div className="mb-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 text-white shadow-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold mb-2">Your Credits</h2>
+              <p className="text-4xl font-bold">{userCredits}</p>
+            </div>
+            <CreditCard className="w-16 h-16 opacity-80" />
+          </div>
+        </div>
+      )}
       <div className="mb-6">
         <div className="flex items-center justify-center w-full">
           <label
