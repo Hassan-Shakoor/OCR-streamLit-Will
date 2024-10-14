@@ -1,4 +1,3 @@
-// app/api/create-payment-intent/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -7,12 +6,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 export async function POST(request: Request) {
-  const { amount } = await request.json();
+  const { amount, user_id, credits } = await request.json();
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: "usd",
+      metadata: {
+        user_id: user_id,
+        credits: credits.toString()
+      },
     });
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
