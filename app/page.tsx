@@ -2,17 +2,15 @@ import HeroImage from "@/app/assets/hero-image.jpg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { features } from "@/data/features";
 import { pricing } from "@/data/pricing";
 import { auth } from "@clerk/nextjs/server";
-import { CircleCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -105,9 +103,7 @@ export default async function Home() {
           <div className="absolute bottom-0 right-0 w-1/2 h-56 bg-sky-600 rounded-full mix-blend-multiply opacity-70 animate-blob delay-1000 filter blur-3xl"></div>
         </div>
       </section>
-
       {/* Pricing */}
-
       <section className="border-b dark border-border bg-background">
         <div className="container mx-auto text-center">
           <div className="py-14">
@@ -115,32 +111,55 @@ export default async function Home() {
               Pricing Plans
             </h2>
 
-            <p className="mx-auto my-4 text-sm w-full max-w-md bg-transparent text-center font-medium leading-relaxed tracking-wide text-muted-foreground">
+            <p className="mx-auto my-4 text-sm w-full max-w-md text-muted-foreground font-medium leading-relaxed tracking-wide">
               Choose a plan that works best for you. You can always upgrade or
               downgrade your plan later.
             </p>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
               {pricing.map((plan) => (
                 <Card
                   key={plan.title}
-                  className="w-full mx-auto max-w-xl text-left relative"
+                  className={`relative overflow-hidden w-full mx-auto max-w-lg rounded-3xl shadow-lg transition-transform transform hover:scale-105 
+            ${plan.fancy ? "bg-purple-600 text-white" : "bg-card"}`}
                 >
                   {plan.fancy && (
-                    <Badge className="absolute top-4 right-4">Popular</Badge>
+                    <Badge className="absolute top-4 right-4 bg-yellow-500 text-white">
+                      Popular
+                    </Badge>
                   )}
-                  <CardHeader>
-                    <CardTitle className="text-2xl">{plan.title}</CardTitle>
-                    <CardDescription className="mt-4">
+
+                  {/* Apply overlay to ensure readability */}
+                  {plan.fancy && (
+                    <div className="absolute inset-0 bg-black/30 z-[-1] rounded-3xl" />
+                  )}
+
+                  <CardHeader className="pt-8 pb-4 text-center">
+                    <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full">
+                      <span className="text-3xl font-extrabold">
+                        {plan.emoji || "💼"}
+                      </span>
+                    </div>
+
+                    <CardTitle className="text-2xl font-extrabold tracking-tight">
+                      {plan.title}
+                    </CardTitle>
+                    <CardDescription className="mt-2 text-lg text-white/80">
                       {plan.description}
                     </CardDescription>
-                    <h5 className="text-2xl font-bold">
+
+                    <h5 className="mt-4 text-3xl font-bold text-white">
                       {plan.credits} credits for {plan.price}
                     </h5>
                   </CardHeader>
-                  <CardContent>
+
+                  <CardContent className="px-6">
                     <Button
-                      className="w-full"
-                      variant={plan.fancy ? "default" : "secondary"}
+                      className={`w-full mt-4 py-3 rounded-full text-lg ${
+                        plan.fancy
+                          ? "bg-white text-purple-600"
+                          : "bg-primary text-white"
+                      }`}
                     >
                       <Link
                         href={`/checkout?plan=${encodeURIComponent(
@@ -153,16 +172,6 @@ export default async function Home() {
                       </Link>
                     </Button>
                   </CardContent>
-                  <CardFooter>
-                    <ul className="mt-4">
-                      {plan.features.map((feature) => (
-                        <li key={feature} className="flex items-center gap-2">
-                          <CircleCheck className="w-4 h-4 text-green-500" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardFooter>
                 </Card>
               ))}
             </div>
