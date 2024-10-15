@@ -137,7 +137,7 @@ export default async function Home() {
                   <CardHeader className="pt-8 pb-4 text-center">
                     <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full">
                       <span className="text-3xl font-extrabold">
-                        {plan.emoji || "💼"}
+                        "💼"
                       </span>
                     </div>
 
@@ -155,11 +155,10 @@ export default async function Home() {
 
                   <CardContent className="px-6">
                     <Button
-                      className={`w-full mt-4 py-3 rounded-full text-lg ${
-                        plan.fancy
+                      className={`w-full mt-4 py-3 rounded-full text-lg ${plan.fancy
                           ? "bg-white text-purple-600"
                           : "bg-primary text-white"
-                      }`}
+                        }`}
                     >
                       <Link
                         href={`/checkout?plan=${encodeURIComponent(
