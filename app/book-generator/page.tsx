@@ -20,8 +20,10 @@ export default function Dashboard() {
   const [creditsError, setCreditsError] = useState<string | null>(null); // Error for credits fetch
 
   useEffect(() => {
-    fetchUserCredits();
-  }, []);
+    if (userId) {
+      fetchUserCredits();
+    }
+  }, [userId]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -71,7 +73,6 @@ export default function Dashboard() {
 
     try {
       const token = await getToken();
-      console.log("token=", token);
       const response = await axios.post(
         "https://akm-image-latest.onrender.com/api/v1/generate-notes/",
         formData,
@@ -90,7 +91,9 @@ export default function Dashboard() {
       setError(err.response?.data?.message || "An unexpected error occurred");
     } finally {
       setLoading(false);
-      await fetchUserCredits();
+      if (userId) {
+        await fetchUserCredits();
+      }
     }
   };
 
@@ -204,9 +207,8 @@ export default function Dashboard() {
         <div className="mt-6 relative">
           <h2 className="text-xl font-semibold mb-2">OCR Result:</h2>
           <div
-            className={`bg-gray-100 p-4 rounded-lg h-96 overflow-y-auto overflow-x-hidden ${
-              loading ? "blur-sm" : ""
-            }`}
+            className={`bg-gray-100 p-4 rounded-lg h-96 overflow-y-auto overflow-x-hidden ${loading ? "blur-sm" : ""
+              }`}
           >
             {Object.keys(result).map((key) => (
               <div key={key}>
