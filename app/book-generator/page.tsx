@@ -37,7 +37,7 @@ export default function Dashboard() {
     try {
       const token = await getToken();
       const response = await axios.get(
-        `https://akm-image-latest.onrender.com/api/v1/users/${userId}/`,
+        `http://localhost:8000/api/v1/users/${userId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ export default function Dashboard() {
     try {
       const token = await getToken();
       const response = await axios.post(
-        "https://akm-image-latest.onrender.com/api/v1/generate-notes/",
+        "http://localhost:8000/api/v1/generate-notes/",
         formData,
         {
           headers: {
