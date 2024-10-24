@@ -207,14 +207,30 @@ export default function Dashboard() {
         <div className="mt-6 relative">
           <h2 className="text-xl font-semibold mb-2">OCR Result:</h2>
           <div
-            className={`bg-gray-100 p-4 rounded-lg h-96 overflow-y-auto overflow-x-hidden ${loading ? "blur-sm" : ""
-              }`}
+            className={`bg-gray-100 p-4 rounded-lg h-96 overflow-y-auto overflow-x-hidden ${
+              loading ? "blur-sm" : ""
+            }`}
           >
-            {Object.keys(result).map((key) => (
-              <div key={key}>
-                <strong>{key}:</strong> {result[key]}
+            {result.heading && result.subHeading ? (
+              <div>
+                <h3 className="text-2xl font-bold mb-2 text-blue-600">
+                  {result.heading}
+                </h3>
+                <h4 className="text-xl font-semibold mb-4 text-gray-700">
+                  {result.subHeading}
+                </h4>
               </div>
-            ))}
+            ) : null}
+
+            {/* Render the rest of the result normally */}
+            {Object.keys(result).map(
+              (key) =>
+                !["heading", "subHeading"].includes(key) && ( // Exclude heading and subHeading from this map
+                  <div key={key}>
+                    <strong>{key}:</strong> {result[key]}
+                  </div>
+                )
+            )}
           </div>
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded-lg">
