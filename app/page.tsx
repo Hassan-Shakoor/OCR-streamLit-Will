@@ -1,4 +1,4 @@
-import HeroImage from "@/app/assets/hero-image.jpg";
+import HeroImage from "@/app/assets/hero-image.svg";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -56,14 +56,13 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="max-w-4xl mx-auto mb-8">
+          <div className="w-full max-w-4xl mx-auto aspect-[3/2] relative">
             <Image
-              className="w-full"
               src={HeroImage}
               alt="Dashboard ui design"
               priority
-              width={1200}
-              height={800}
+              className="object-contain"
+              fill
             />
           </div>
         </main>
@@ -89,9 +88,6 @@ export default async function Home() {
                   </CardHeader>
                   <CardContent>
                     <CardTitle>{feature.title}</CardTitle>
-                    <CardDescription className="mt-4">
-                      {feature.description}
-                    </CardDescription>
                   </CardContent>
                 </Card>
               ))}
@@ -108,12 +104,14 @@ export default async function Home() {
         <div className="container mx-auto text-center">
           <div className="py-14">
             <h2 className="text-4xl font-extrabold my-4 text-foreground">
-              Pricing Plans
+              Pricing
             </h2>
 
             <p className="mx-auto my-4 text-sm w-full max-w-md text-muted-foreground font-medium leading-relaxed tracking-wide">
-              Choose a plan that works best for you. You can always upgrade or
-              downgrade your plan later.
+              Only pay for what you use - no monthly commintments. Simply upload
+              your book pages and we'll generate detailed AI-powered notes.
+              AI-Powered Note Generation Interact with your generated notes via
+              custom prompts 1 credit per note generated or Inputted prompt
             </p>
 
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
@@ -136,17 +134,12 @@ export default async function Home() {
 
                   <CardHeader className="pt-8 pb-4 text-center">
                     <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full">
-                      <span className="text-3xl font-extrabold">
-                        "💼"
-                      </span>
+                      <span className="text-3xl font-extrabold">"💼"</span>
                     </div>
 
                     <CardTitle className="text-2xl font-extrabold tracking-tight">
                       {plan.title}
                     </CardTitle>
-                    <CardDescription className="mt-2 text-lg text-white/80">
-                      {plan.description}
-                    </CardDescription>
 
                     <h5 className="mt-4 text-3xl font-bold text-white">
                       {plan.credits} credits for {plan.price}
@@ -155,10 +148,11 @@ export default async function Home() {
 
                   <CardContent className="px-6">
                     <Button
-                      className={`w-full mt-4 py-3 rounded-full text-lg ${plan.fancy
+                      className={`w-full mt-4 py-3 rounded-full text-lg ${
+                        plan.fancy
                           ? "bg-white text-purple-600"
                           : "bg-primary text-white"
-                        }`}
+                      }`}
                     >
                       <Link
                         href={`/checkout?plan=${encodeURIComponent(
