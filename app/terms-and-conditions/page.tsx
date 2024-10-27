@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
   FaShieldAlt,
   FaUserSecret,
@@ -5,6 +6,12 @@ import {
   FaSyncAlt,
   FaEnvelope,
 } from "react-icons/fa";
+
+interface CardProps {
+  icon: ReactNode;
+  title: string;
+  description: string;
+}
 
 export default function TermsAndConditionsPage() {
   return (
@@ -60,7 +67,7 @@ export default function TermsAndConditionsPage() {
 }
 
 // Card component for cleaner code
-function Card({ icon, title, description }) {
+function Card({ icon, title, description }: CardProps) {
   return (
     <div className="border rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
       <div className="flex items-center space-x-4 mb-4">
