@@ -4,6 +4,10 @@ export const navLinks = [
         href: "/",
     },
     {
+        title: "Book Generator",
+        href: "/book-generator",
+    },
+    {
         title: "About",
         href: "/about",
     },
